@@ -12,7 +12,7 @@ import com.birdsh.chen.entity.Role;
 import com.birdsh.chen.entity.User;
 
 public interface UserDao {
-	@Select(" select * from user where username=#{username}")
+	@Select(" select id,username,password,role_id roleId from user where username=#{username}")
 	public User getByUsername(String username);
 	@SelectProvider(type = UserSqlProvider.class, method = "findRolesByName")
 	public List<Role> getRoles(String username);

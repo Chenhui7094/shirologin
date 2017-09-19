@@ -1,6 +1,5 @@
 package com.birdsh.chen.shiro;
 
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -16,8 +15,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * shiro配置项
- * Created by Lucare.Feng on 2017/3/6.
+ * @ClassName: ShiroConfiguration.java 
+ * @Description:shiro配置项
+ * @author chenhuihui
+ * @time 2017年9月19日上午10:10:44
  */
 @Configuration
 public class ShiroConfiguration {
@@ -53,11 +54,16 @@ public class ShiroConfiguration {
         return ehCacheManager;
     }
 
+    //配置核心安全事务管理器
     @Bean(name = "securityManager")
     public DefaultWebSecurityManager securityManager(){
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+      //注入realm
         securityManager.setRealm(shiroRealm());
+      //注入缓存管理器;  
         securityManager.setCacheManager(ehCacheManager());//用户授权/认证信息Cache, 采用EhCache 缓存
+      //注入记住我管理器;
+//        manager.setRememberMeManager(rememberMeManager());
         return securityManager;
     }
 
@@ -80,7 +86,8 @@ public class ShiroConfiguration {
         filterChainDefinitionManager.put("/login", "anon");//anon 可以理解为不拦截
         filterChainDefinitionManager.put("/ajaxLogin", "anon");//anon 可以理解为不拦截
         filterChainDefinitionManager.put("/statistic/**",  "anon");//静态资源不拦截
-//        filterChainDefinitionManager.put("/**",  "authc,roles[user]");//其他资源全部拦截
+        //如果不注释会把Swagger也给拦截
+//      filterChainDefinitionManager.put("/**",  "authc,roles[user]");//其他资源全部拦截
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionManager);
 
         shiroFilterFactoryBean.setLoginUrl("/login");

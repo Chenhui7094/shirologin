@@ -32,7 +32,6 @@ public class ShiroRealm extends AuthorizingRealm {
 
     private Logger logger = LoggerFactory.getLogger(ShiroRealm.class);
 
-    //一般这里都写的是servic，我省略了service的接口和实现方法直接调用的dao
     @Autowired
     private UserService userService;
 
